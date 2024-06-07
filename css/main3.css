@@ -1,0 +1,232 @@
+/* General styles */
+body {
+    background-color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar styles */
+.navbar {
+    background-color: rgb(27, 27, 27) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgb(255, 0, 0);
+}
+
+.navbar-brand {
+    color: #ffffff !important;
+    font-size: 1.75rem;
+    font-weight: bold;
+    font-family: 'Rubik', sans-serif;
+    transition: color 0.3s;
+}
+
+.navbar-brand:hover {
+    color: #ffcc00 !important;
+}
+
+.nav-link {
+    color: #ffffff !important;
+    font-size: 1.1rem;
+    transition: color 0.3s, background-color 0.3s;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-family: 'Rubik', sans-serif;
+}
+
+.nav-link:hover {
+    color: #ffcc00 !important;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    color: #ffffff;
+}
+
+.navbar-nav .nav-item + .nav-item {
+    margin-left: 10px;
+}
+
+/* Custom styles for nav icons */
+.nav-link i {
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+/* Logo styles */
+.navbar img {
+    height: 75px; /* Adjust this value to change the logo size */
+    width: auto;
+    border-radius: 5px;
+    padding-right: 10px;
+}
+
+.navbar img:hover {
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+/* Mobile specific styles */
+@media (max-width: 992px) {
+    .navbar-nav .nav-link {
+        padding: 10px 15px;
+        text-align: center;
+        color: #ffffff !important;
+        font-size: 1.2rem;
+    }
+
+    .navbar-nav .nav-item {
+        margin: 5px 0;
+    }
+
+    .navbar-toggler-icon {
+        color: #ffffff;
+    }
+}
+
+/* Other custom styles */
+.carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 20px;
+}
+
+.dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+.blur-background-dark {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.blur-background-transparent {
+    background-color: transparent;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.img-form-style {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+    padding: 5px;
+}
+
+.text-justify {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.background-custom {
+    /* fallback for old browsers */
+    background: #6a11cb;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+}
+
+.body-custom {
+    border-radius: 15px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.8);
+}
+
+.card {
+    border-radius: 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%; /* Asegura que todas las tarjetas tengan la misma altura */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%; /* Asegura que las tarjetas sean más anchas */
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.img-container {
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa; /* Fondo claro para cuando la imagen no cubra todo el espacio */
+}
+
+.img-container img {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.card-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1rem; /* Tamaño de texto más pequeño */
+    margin: 0.5rem 0;
+    text-align: center;
+}
+
+.card-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.875rem; /* Tamaño de texto más pequeño */
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.card-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn {
+    width: 100%;
+    font-family: 'Rubik', sans-serif;
+    font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+    .col-lg-3 {
+        max-width: 33.33%; /* Hace las tarjetas más anchas */
+        flex: 0 0 33.33%; /* Hace las tarjetas más anchas */
+    }
+}
+
+@media (max-width: 767px) {
+    .col-md-12 {
+        max-width: 100%;
+        flex: 0 0 100%;
+    }
+}

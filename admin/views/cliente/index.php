@@ -10,10 +10,6 @@
             <th scope="col">Primer Apellido</th>
             <th scope="col">Segundo Apellido</th>
             <th scope="col">Nombre</th>
-            <th scope="col">Tefono</th>
-            <th scope="col">Domicilio</th>
-            <th scope="col">Membresia</th>
-            <th scope="col">Rutina</th>
             <th scope="col">Fotografia</th>
             <th scope="col">Opciones</th>
         </tr>
@@ -25,10 +21,6 @@
                 <td><?php echo $dato['primer_apellido']; ?></td>
                 <td><?php echo $dato['segundo_apellido']; ?></td>
                 <td><?php echo $dato['nombre']; ?></td>
-                <td><?php echo $dato['telefono'];?></td>
-                <td><?php echo $dato['domicilio'];?></td>
-                <td><?php echo $dato['id_membresia'];?></td>
-                <td><?php echo $dato['id_rutina'];?></td>
                 <td><?php echo $dato['fotografia'];?></td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
@@ -42,4 +34,4 @@
         <?php endforeach; ?>
     </tbody>
 </table>
-<P>Se encontraron <?php echo $app->getCount();?> producto</P>
+<P>Se encontraron <?php echo $app->getCount();?> cliente/s</P>

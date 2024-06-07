@@ -1,7 +1,7 @@
     <?php
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
 
     require __DIR__ . '/config.php';
     class Sistema extends Config
@@ -74,6 +74,7 @@ use PHPMailer\PHPMailer\SMTP;
                 $_SESSION['correo'] = $correo;
                 $_SESSION['roles'] = $roles;
                 $_SESSION['privilegios'] = $privilegios;
+                $_SESSION['id_usuario'] = $datos[0]['id_usuario'];
                 return $datos[0];
             } else {
                 $this->logout();
@@ -83,10 +84,10 @@ use PHPMailer\PHPMailer\SMTP;
 
         function logout()
         {
-            if(!isset($_SESSION['cart'])){
+            if (!isset($_SESSION['cart'])) {
                 unset($_SESSION);
                 session_destroy();
-            }else{
+            } else {
                 unset($_SESSION['validado']);
                 unset($_SESSION['correo']);
                 unset($_SESSION['roles']);
@@ -147,158 +148,162 @@ use PHPMailer\PHPMailer\SMTP;
         {
             return $this->count;
         }
-        
-    public function validateEmail($email){
-        if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-            return true;
+
+        public function validateEmail($email)
+        {
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                return true;
+            }
+            return false;
         }
-        return false;
-    }
-    function reset($correo){
-        if(filter_var($correo, FILTER_VALIDATE_EMAIL)){
-            $this->connect();
-            $sql = "SELECT * from usuario WHERE correo = :correo;";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':correo', $correo, PDO::PARAM_STR);
-            $stmt->execute();
-            $datos = array();
-            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $datos = $stmt->fetchAll();
-            if(isset($datos[0])){
-                $token1 = md5($correo.'Aleatorio2');
-                $token2 = md5($correo.date('Y-m-d H:i:s').rand(1,1000000));
-                $token = $token1.$token2;
-                $sql = "UPDATE usuario SET token = :token WHERE correo = :correo;";
+        function reset($correo)
+        {
+            if (filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+                $this->connect();
+                $sql = "SELECT * from usuario WHERE correo = :correo;";
                 $stmt = $this->conn->prepare($sql);
-                $stmt->bindParam(':token', $token, PDO::PARAM_STR);
                 $stmt->bindParam(':correo', $correo, PDO::PARAM_STR);
                 $stmt->execute();
-                $destinatario = $correo;
-                $nombre = 'Juanito Bananas';
-                $asunto = 'Recuperacion de contraseña';
-                $mensaje = 'Hola, se ha solicitado la recuperación de contraseña de tu cuenta</br>
+                $datos = array();
+                $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                $datos = $stmt->fetchAll();
+                if (isset($datos[0])) {
+                    $token1 = md5($correo . 'Aleatorio2');
+                    $token2 = md5($correo . date('Y-m-d H:i:s') . rand(1, 1000000));
+                    $token = $token1 . $token2;
+                    $sql = "UPDATE usuario SET token = :token WHERE correo = :correo;";
+                    $stmt = $this->conn->prepare($sql);
+                    $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+                    $stmt->bindParam(':correo', $correo, PDO::PARAM_STR);
+                    $stmt->execute();
+                    $destinatario = $correo;
+                    $nombre = 'Juanito Bananas';
+                    $asunto = 'Recuperacion de contraseña';
+                    $mensaje = 'Hola, se ha solicitado la recuperación de contraseña de tu cuenta</br>
                 Para recuperar tu contraseña haz click en el siguiente enlace</br>
-                <a href="http://localhost/ferreteria/admin/login.php?action=recovery&token='.$token.'">Recuperar contraseña</a><br>
+                <a href="http://localhost/ferreteria/admin/login.php?action=recovery&token=' . $token . '">Recuperar contraseña</a><br>
                 Muchas gracias</br>
                 ferreteria Trupper';
-                if($this->sendMail($destinatario,$nombre,$asunto,$mensaje)){
+                    if ($this->sendMail($destinatario, $nombre, $asunto, $mensaje)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        function sendMail($destinatario, $nombre, $asunto, $mensaje)
+        {
+            require 'C:\xampp\htdocs\gimnasio\vendor\autoload.php';
+            $mail = new PHPMailer();
+            $mail->isSMTP();
+            $mail->SMTPDebug = SMTP::DEBUG_OFF;
+            $mail->Host = 'smtp.gmail.com';
+            $mail->Port = 465;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->SMTPAuth = true;
+            $mail->Username = '20030838@itcelaya.edu.mx';
+            $mail->Password = 'kxoduhrfluojpzlj';
+            $mail->setFrom('20030838@itcelaya.edu.mx', 'Rafael Alonso Villegas Bedolla');
+            $mail->addAddress($destinatario, $nombre);
+            $mail->Subject = $asunto;
+            $mail->msgHTML($mensaje);
+            if (!$mail->send()) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function recovery($token, $contrasena = null)
+        {
+            $this->connect();
+            if (isset($token) == 64) {
+                $sql = "SELECT * from usuario WHERE token = :token;";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+                $stmt->execute();
+                $datos = array();
+                $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                $datos = $stmt->fetchAll();
+                if (isset($datos[0])) {
+                    if (!is_null($contrasena)) {
+                        $contrasena = md5($_POST['contrasena']);
+                        $correo = $datos[0]['correo'];
+                        $sql = "UPDATE usuario SET contrasena=:contrasena, token = NULL WHERE correo = :correo;";
+                        $stmt = $this->conn->prepare($sql);
+                        $stmt->bindParam(':correo', $correo, PDO::PARAM_STR);
+                        $stmt->bindParam(':contrasena', $contrasena, PDO::PARAM_STR);
+                        $stmt->execute();
+                    }
                     return true;
-                }else{
+                }
+            }
+            return false;
+        }
+
+        function register($datos)
+        {
+            if (!filter_var($datos['correo'], FILTER_VALIDATE_EMAIL)) {
+                return false;
+            }
+            $this->connect();
+            try {
+                $this->conn->beginTransaction();
+                $sql = 'SELECT * FROM usuario where correo = :correo';
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
+                $stmt->execute();
+                $usuario = $stmt->fetchAll();
+                if (isset($usuario[0])) {
+                    $this->conn->rollBack();
                     return false;
                 }
-            }
-        }
-    }
-
-    function sendMail($destinatario,$nombre,$asunto,$mensaje){
-        require '../vendor/autoload.php';
-        $mail = new PHPMailer();
-        $mail->isSMTP();
-        $mail->SMTPDebug = SMTP::DEBUG_OFF;
-        $mail->Host = 'smtp.gmail.com';
-        $mail->Port = 465;
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->SMTPAuth = true;
-        $mail->Username = '20000000@itcelaya.edu.mx';
-        $mail->Password = 'vdvsdvsdvsdvdsvds';
-        $mail->setFrom('20030838@itcelaya.edu.mx', 'Rafael Alonso Villegas Bedolla');
-        $mail->addAddress($destinatario,$nombre);
-        $mail->Subject = $asunto;
-        $mail->msgHTML($mensaje);
-        if (!$mail->send()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    function recovery($token, $contrasena=null){
-        $this->connect();
-        if(isset($token)==64){
-            $sql = "SELECT * from usuario WHERE token = :token;";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':token', $token, PDO::PARAM_STR);
-            $stmt->execute();
-            $datos = array();
-            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $datos = $stmt->fetchAll();
-            if(isset($datos[0])){
-                if(!is_null($contrasena)){
-                $contrasena=md5($_POST['contrasena']);
-                $correo = $datos[0]['correo'];
-                $sql = "UPDATE usuario SET contrasena=:contrasena, token = NULL WHERE correo = :correo;";
+                $sql = 'INSERT INTO usuario(correo, contrasena) values
+        (:correo, :contrasena);';
                 $stmt = $this->conn->prepare($sql);
-                $stmt->bindParam(':correo', $correo, PDO::PARAM_STR);
+                $stmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
+                $contrasena = $datos['contrasena'];
+                $contrasena = md5($contrasena);
                 $stmt->bindParam(':contrasena', $contrasena, PDO::PARAM_STR);
                 $stmt->execute();
+                $sql = 'SELECT * from usuario where correo = :correo';
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
+                $stmt->execute();
+                $usuario = $stmt->fetchAll();
+                if ($usuario[0]) {
+                    $id_usuario = $usuario[0]['id_usuario'];
+                    $sql = 'INSERT INTO usuario_rol (id_usuario,id_rol) values (:id_usuario,2)';
+                    $stmt = $this->conn->prepare($sql);
+                    $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $sql = 'INSERT INTO cliente(primer_apellido, segundo_apellido, nombre,rfc,id_usuario) values(:primer_apellido, :segundo_apellido, :nombre,:rfc,:id_usuario);';
+                    $stmt = $this->conn->prepare($sql);
+                    $stmt->bindParam(':primer_apellido', $datos['primer_apellido'], PDO::PARAM_STR);
+                    $stmt->bindParam(':segundo_apellido', $datos['segundo_apellido'], PDO::PARAM_STR);
+                    $stmt->bindParam(':nombre', $datos['nombre'], PDO::PARAM_STR);
+                    $stmt->bindParam(':rfc', $datos['rfc'], PDO::PARAM_STR);
+                    $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $sql = 'select * from cliente c join usuario u on u.id_usuario = :id_usuario;';
+                    $stmt = $this->conn->prepare($sql);
+                    $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $info = $stmt->fetchAll();
+                    if (isset($info['0'])) {
+                        $this->conn->commit();
+                        return true;
+                    }
+                    $this->conn->rollback();
+                    return false;
                 }
-                return true;
+            } catch (PDOException $e) {
+                $this->conn->rollback();
+                return false;
             }
         }
-        return false;
-    }
-
-    function register($datos){
-        if(!filter_var($datos['correo'], FILTER_VALIDATE_EMAIL)){
-            return false;
-        }
-        $this->connect();
-        try{
-        $this->conn->beginTransaction();
-        $sql = 'SELECT * FROM usuario where correo = :correo';
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
-        $stmt->execute();
-        $usuario = $stmt->fetchAll();
-        if(isset($usuario[0])){
-            $this->conn->rollBack();
-            return false;
-        }
-        $sql = 'INSERT INTO usuario(correo, contrasena) values
-        (:correo, :contrasena);';                
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
-        $contrasena = $datos['contrasena'];
-        $stmt->bindParam(':contrasena', $datos['contrasena'], PDO::PARAM_STR);
-        $stmt->execute();
-        $sql = 'SELECT * from usuario where correo = :correo';
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
-        $stmt->execute();
-        $usuario = $stmt->fetchAll();
-        if($usuario[0]){
-            $id_usuario = $usuario[0]['id_usuario'];
-            $sql = 'INSERT INTO usuario_rol (id_usuario,id_rol) values (:id_usuario,2)';
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
-            $stmt->execute();
-            $sql = 'INSERT INTO cliente(primer_apellido, segundo_apellido, nombre,rfc,id_usuario) values(:primer_apellido, :segundo_apellido, :nombre,:rfc,:id_usuario);';
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':primer_apellido', $datos['apellido'], PDO::PARAM_STR);
-            $stmt->bindParam(':segundo_apellido', $datos['apellido'], PDO::PARAM_STR);
-            $stmt->bindParam(':nombre', $datos['nombre'], PDO::PARAM_STR);
-            $stmt->bindParam(':rfc', $datos['rfc'], PDO::PARAM_STR);
-            $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
-            $stmt->execute();
-            $sql = 'select * from cliente c join usuario u on u.id_usuario = :id_usuario;';
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
-            $stmt->execute();
-            $info = $stmt->fetchAll();
-            if(isset($info['0'])){
-                $this->conn->commit();
-                return true;
-            }
-            $this->conn->rollback();
-            return false;
-        }
-
-
-        }catch(PDOException $e){
-            $this->conn->rollback();
-            return false;
-        }
-    }
 
 
         function upload($carpeta)

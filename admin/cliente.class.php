@@ -5,7 +5,7 @@ class Cliente extends Sistema
     function getAll()
     {
         $this->connect();
-        $stmt = $this->conn->prepare("SELECT c.id_cliente, c.primer_apellido, c.segundo_apellido, c.nombre, c.telefono, c.domicilio, c.id_membresia, c.id_rutina, c.fotografia 
+        $stmt = $this->conn->prepare("SELECT c.id_cliente, c.primer_apellido, c.segundo_apellido, c.nombre,c.fotografia 
         FROM cliente c;");
         $stmt->execute();
         $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -17,7 +17,7 @@ class Cliente extends Sistema
     function getOne($id_cliente)
     {
         $this->connect();
-        $stmt = $this->conn->prepare("SELECT c.id_cliente, c.primer_apellido, c.segundo_apellido, c.nombre, c.telefono, c.domicilio, c.id_membresia, c.id_rutina, c.fotografia 
+        $stmt = $this->conn->prepare("SELECT c.id_cliente, c.primer_apellido, c.segundo_apellido, c.nombre, c.fotografia 
         FROM cliente c;
         WHERE id_cliente=:id_cliente;");
         $stmt->bindParam(':id_cliente', $id_cliente, PDO::PARAM_INT);

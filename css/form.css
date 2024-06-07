@@ -1,0 +1,142 @@
+/* Contenedor principal */
+.container {
+    max-width: 600px; /* Aumenta el ancho máximo del contenedor */
+    margin: 40px auto;
+    padding: 20px 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Título principal */
+.container h1 {
+    text-align: center;
+    color: #333333;
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+/* Estilos para el formulario */
+form {
+    margin-top: 20px;
+}
+
+/* Estilos para los campos flotantes */
+.form-floating {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-floating input {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 16px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+
+.form-floating input:focus {
+    border-color: #80bdff;
+    outline: 0;
+}
+
+.form-floating label {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    font-size: 14px;
+    color: #6c757d;
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+.form-floating input:focus ~ label,
+.form-floating input:not(:placeholder-shown) ~ label {
+    top: -10px;
+    left: 15px;
+    font-size: 12px;
+    color: #495057;
+    background-color: #ffffff;
+    padding: 0 5px;
+}
+
+/* Botones */
+.btn {
+padding: 5px;
+margin: 10px;
+}
+
+.btn-warning {
+    color: #ffffff;
+    background-color: #ffc107;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-danger {
+    color: #ffffff;
+    background-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-success {
+    color: #ffffff;
+    background-color: #28a745;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilos para el contenedor de botones */
+.row .col-4 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+
+/* Ajustes para la visualización en pantallas más pequeñas */
+@media (max-width: 576px) {
+    .container {
+    }
+
+    .form-floating input {
+        padding: 10px 15px;
+    }
+
+    .form-floating label {
+        top: 10px;
+        left: 15px;
+    }
+
+    .form-floating input:focus ~ label,
+    .form-floating input:not(:placeholder-shown) ~ label {
+        top: -8px;
+        left: 10px;
+        font-size: 12px;
+    }
+
+    .btn {
+        font-size: 14px;
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .row .col-4 {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

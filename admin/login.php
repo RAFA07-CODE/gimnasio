@@ -16,7 +16,7 @@ switch ($action) {
         $password = $_POST['password'];
         $login = $app->login($correo, $password);
         if ($login) {
-            header('Location: rutina.php');
+            header('Location: producto.php');
         } else {
             $type = "danger";
             $message = '<i class="fa-solid fa-circle-xmark"></i> Usuario o contraseña incorrectos';

@@ -12,15 +12,18 @@
   
   <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/gimnasio/index.html">Gimnasio</a>
+    <a class="navbar-brand" href="/gimnasio/index.php">Gimnasio</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/ferreteria/index.html">Inicio</a>
+          <a class="nav-link active" aria-current="page" href="\gimnasio\index.php">Inicio</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="orders.php">Pedidos</a>
+          </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
              Catalogo
@@ -28,18 +31,23 @@
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="../admin/cliente.php">Cliente</a></li>
             <li><a class="dropdown-item" href="../admin/empleado.php">Empleado</a></li>
-            <li><a class="dropdown-item" href="../admin/ejercicio.php">Ejercicio</a></li>
             <li><a class="dropdown-item" href="../admin/rutina.php">Rutina</a></li>
             <li><a class="dropdown-item" href="../admin/cita.php">Cita</a></li>
-            <li><a class="dropdown-item" href="../admin/membresia.php">Membresia</a></li>
-            <li><a class="dropdown-item" href="../admin/equipo.php">Equipo</a></li>
             <li><a class="dropdown-item" href="../admin/proveedor.php">Proveedores</a></li>
-            <li><a class="dropdown-item" href="../admin/compra.php">Compra</a></li>
-            <li><a class="dropdown-item" href="../admin/venta.php">Venta</a></li>
-            <li><a class="dropdown-item" href="../admin/comentario.php">Comentarios</a></li>
             <li><a class="dropdown-item" href="../admin/marca.php">Marca</a></li>
+            <li><a class="dropdown-item" href="../admin/producto.php">Productos</a></li>
           </ul>
         </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Administracion
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="../admin/usuario.php">Usuarios</a></li>
+              <li><a class="dropdown-item" href="../admin/rol.php">Roles</a></li>
+              <li><a class="dropdown-item" href="../admin/privilegio.php">Privilegios</a></li>
+            </ul>
+          </li>
         <li class="nav-item">
             <a class="nav-link" aria-current="page" href="login.php?action=logout">Logout</a>
           </li>
